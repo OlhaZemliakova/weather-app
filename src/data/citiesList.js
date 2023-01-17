@@ -1,4 +1,4 @@
-export const cities = [
+export const citiesList = [
   {
     name: "Vancouver",
     latitude: 49.25,
@@ -33,7 +33,7 @@ export const cities = [
     name: "Valletta",
     latitude: 35.9,
     longitude: 14.51,
-    default: false,
+    default: true,
   },
   {
     name: "Stone Town",
@@ -57,6 +57,10 @@ export const cities = [
     name: "Sharm el Sheikh",
     latitude: 27.92,
     longitude: 34.33,
-    default: false,
+    default: true,
   },
 ];
+
+export const getDefaultCoordinates = () => {
+  return citiesList.filter((city) => city.default);
+};
