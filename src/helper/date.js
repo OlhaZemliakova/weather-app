@@ -14,10 +14,10 @@ export const getToday = formatDate(new Date());
 
 export const getNextDay = () => {
   const dateInMs = new Date().getTime() + 24 * 60 * 60 * 1000;
-  const dateFormat = new Date(dateInMs);
+  const dateInObj = new Date(dateInMs);
 
-  return dateFormat
+  return dateInObj
 }
 
 export const nextDay = formatDate(getNextDay());
-console.log(nextDay);
+
