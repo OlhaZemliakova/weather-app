@@ -32,6 +32,12 @@ export const useMainStore = defineStore("MainStore", {
       this.selectedCities.push(citySelection);
       this.loadForecast();
     },
+    removeCity(name) {
+      this.selectedCities = this.selectedCities.filter(
+        (item) => item.name !== name
+      );
+      this.loadForecast();
+    },
     setToday() {
       this.date.start_date = getToday;
       this.date.end_date = getToday;
@@ -41,7 +47,7 @@ export const useMainStore = defineStore("MainStore", {
       this.date.start_date = tomorrow;
       this.date.end_date = tomorrow;
       this.loadForecast();
-    }
+    },
   },
   getters: {
     getListData() {
