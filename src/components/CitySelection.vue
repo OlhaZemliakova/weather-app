@@ -1,13 +1,16 @@
 <template>
-  <div>
-    <button @click="openCitiesList()">City Select</button>
-    <ul v-if="isOpen == true">
-      <li v-for="city in mainStore.getAvailableCities" :key="city.name">
-        {{ city.name }}
-        <button @click="addCity(city.name)">Add</button>
-      </li>
-    </ul>
-  </div>
+  <v-btn dark color="primary" @click="openCitiesList()">City Select</v-btn>
+  <v-list v-if="isOpen == true">
+    <v-list-item v-for="city in mainStore.getAvailableCities" :key="city.name">
+      {{ city.name }}
+      <v-btn dark color="primary" size="small" @click="addCity(city.name)">
+        Add
+      </v-btn>
+    </v-list-item>
+  </v-list>
+  <v-alert v-if="mainStore.getAvailableCities.length === 0" color="info" icon="$error">
+    List is empty
+  </v-alert>
 </template>
 
 <script>
@@ -37,22 +40,4 @@ export default {
 </script>
 
 <style scoped>
-ul {
-  border: 1px solid red;
-  width: 180px;
-  padding: 5px;
-  margin-bottom: 10px;
-  margin-top: 10px;
-}
-li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 5px;
-  border: 1px solid black;
-  padding: 2px;
-}
-li:last-child {
-  margin-bottom: 0;
-}
 </style>

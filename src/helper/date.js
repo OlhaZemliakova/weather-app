@@ -12,12 +12,11 @@ export const formatDate = (time) => {
 
 export const getToday = formatDate(new Date());
 
-export const getNextDay = () => {
+export const getTomorrow = () => {
   const dateInMs = new Date().getTime() + 24 * 60 * 60 * 1000;
   const dateInObj = new Date(dateInMs);
 
   return dateInObj
 }
 
-export const nextDay = formatDate(getNextDay());
-
+export const tomorrow = formatDate(getTomorrow());

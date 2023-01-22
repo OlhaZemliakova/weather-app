@@ -6,6 +6,10 @@ import { citiesList } from "../data/citiesList.js";
 
 export const useMainStore = defineStore("MainStore", {
   state: () => ({
+    sort: {
+      type: "cityName",
+      order: "asc",
+    },
     date: {
       start_date: getToday,
       end_date: getToday,
@@ -18,11 +22,13 @@ export const useMainStore = defineStore("MainStore", {
       this.forecast = [];
 
       this.selectedCities.forEach((city) =>
-        api
-          .getForecast(this.date, city)
-          .then((result) =>
-            this.forecast.push({ name: city.name, forecast: result })
-          )
+        api.getForecast(this.date, city).then((result) =>
+          this.forecast.push({
+            cityName: city.name,
+            minTemp: result.daily.temperature_2m_min[0],
+            maxTemp: result.daily.temperature_2m_max[0],
+          })
+        )
       );
     },
     addCity(name) {
@@ -48,10 +54,33 @@ export const useMainStore = defineStore("MainStore", {
       this.date.end_date = tomorrow;
       this.loadForecast();
     },
+    sortData(type) {
+      if (type === this.sort.type) {
+        this.sort.order = this.sort.order === "asc" ? "desc" : "asc";
+        return;
+      }
+
+      this.sort.type = type;
+      this.sort.order = "asc";
+    },
   },
   getters: {
     getListData() {
-      return this.forecast;
+      if (this.sort.type === "cityName") {
+        return this.forecast.sort((a, b) => {
+          let modifier = 1;
+          if (this.sort.order === "desc") modifier = -1;
+          return a.cityName.localeCompare(b.cityName) * modifier;
+        });
+      }
+      
+      return this.forecast.sort((a, b) => {
+        let modifier = 1;
+        if (this.sort.order === "desc") modifier = -1;
+        if (a[this.sort.type] < b[this.sort.type]) return -1 * modifier;
+        if (a[this.sort.type] > b[this.sort.type]) return 1 * modifier;
+        return 0;
+      });
     },
     getAvailableCities() {
       const availableCities = citiesList.filter(

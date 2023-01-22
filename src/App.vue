@@ -1,17 +1,24 @@
 <template>
-  <div
-  v-for="data in mainStore.getListData"
-  :key="data.name">
-  {{ data.name }}
-  {{ data.forecast.daily.temperature_2m_min[0] }}
-  {{ data.forecast.daily.temperature_2m_max[0] }}
-  </div>
+  <v-app>
+    <v-app-bar color="grey-lighten-2">
+      <v-icon icon="mdi-home" />
+    </v-app-bar>
+    <v-main>
+      <v-container>
+        <SetDayComponent />
+        <WeatherForecastTableComponent />
+      </v-container>
+    </v-main>
+  </v-app>
 </template>
 
 <script>
 import { useMainStore } from "@/stores/MainStore";
+import WeatherForecastTableComponent from "@/components/WeatherForecastTableComponent.vue";
+import SetDayComponent from "@/components/SetDayComponent.vue";
 
 export default {
+  components: { WeatherForecastTableComponent, SetDayComponent },
   name: "app",
 
   setup() {

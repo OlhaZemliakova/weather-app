@@ -1,20 +1,39 @@
 <template>
-  <div class="container">
-    <CitySelection />
-    <ul class="contoller">
-      <li>City</li>
-      <li>MinTemp</li>
-      <li>MaxTemp</li>
-    </ul>
-    <div class="forecast-wrapper">
-      <ul v-for="data in mainStore.getListData" :key="data.name">
-        <li>{{ data.name }}</li>
-        <li>{{ data.forecast.daily.temperature_2m_min[0] }}</li>
-        <li>{{ data.forecast.daily.temperature_2m_max[0] }}</li>
-        <li><button @click="removeCity(data.name)">Delete</button></li>
-      </ul>
-    </div>
-  </div>
+  <CitySelection />
+  <v-table>
+    <thead>
+      <tr>
+        <th @click="sortData('cityName')">
+          <p>City</p>
+          <v-icon icon="mdi-menu-swap" />
+        </th>
+        <th @click="sortData('minTemp')">
+          <p>MinTemp</p>
+          <v-icon icon="mdi-menu-swap" />
+        </th>
+        <th @click="sortData('maxTemp')">
+          <p>MaxTemp</p>
+          <v-icon icon="mdi-menu-swap" />
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="data in mainStore.getListData" :key="data.name">
+        <td>{{ data.cityName }}</td>
+        <td>{{ data.minTemp }}</td>
+        <td>{{ data.maxTemp }}</td>
+        <td>
+          <v-btn
+            color="error"
+            rounded="pill"
+            size="x-small"
+            @click="removeCity(data.name)"
+            >Delete</v-btn
+          >
+        </td>
+      </tr>
+    </tbody>
+  </v-table>
 </template>
 
 <script>
@@ -34,22 +53,15 @@ export default {
     removeCity(name) {
       this.mainStore.removeCity(name);
     },
+    sortData(type) {
+      this.mainStore.sortData(type);
+    }
   },
 };
 </script>
 
 <style scoped>
-ul {
-  display: flex;
-}
-
-li {
-  border: 1px solid red;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 4px;
-  margin-right: 2px;
-  width: 300px;
+th {
+  cursor: pointer;
 }
 </style>
