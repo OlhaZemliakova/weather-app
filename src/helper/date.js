@@ -1,3 +1,11 @@
+export const getToday = new Date();
+
+export const getNextDay = (currentDate) => {
+  const parsedDate = Date.parse(currentDate);
+  const dateObject = new Date(parsedDate + 24 * 60 * 60 * 1000);
+  return dateObject;
+};
+
 function addLeadingZero(number) {
   return number < 10 ? "0" + number : number;
 }
@@ -9,14 +17,3 @@ export const formatDate = (time) => {
 
   return `${year}-${month}-${date}`;
 };
-
-export const getToday = formatDate(new Date());
-
-export const getTomorrow = () => {
-  const dateInMs = new Date().getTime() + 24 * 60 * 60 * 1000;
-  const dateInObj = new Date(dateInMs);
-
-  return dateInObj
-}
-
-export const tomorrow = formatDate(getTomorrow());

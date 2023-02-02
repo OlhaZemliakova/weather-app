@@ -1,4 +1,5 @@
 import axios from "axios";
+import { formatDate } from "./date";
 
 export default {
   getForecast(date, city) {
@@ -8,8 +9,8 @@ export default {
           latitude: city.latitude,
           longitude: city.longitude,
           timezone: "PST",
-          start_date: date.start_date,
-          end_date: date.end_date,
+          start_date: formatDate(date),
+          end_date: formatDate(date),
           daily: ["temperature_2m_max", "temperature_2m_min"],
         },
       })

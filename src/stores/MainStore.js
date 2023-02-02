@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import api from "@/helper/api";
-import { getToday, tomorrow } from "@/helper/date.js";
+import { getToday, getNextDay } from "@/helper/date.js";
 import { getDefaultCoordinates } from "../data/citiesList";
 import { citiesList } from "../data/citiesList.js";
 
@@ -10,26 +10,28 @@ export const useMainStore = defineStore("MainStore", {
       type: "cityName",
       order: "asc",
     },
-    date: {
-      start_date: getToday,
-      end_date: getToday,
-    },
+    date: getToday,
     selectedCities: [...getDefaultCoordinates()],
     forecast: [],
+    isLoading: false,
   }),
   actions: {
     loadForecast() {
       this.forecast = [];
 
-      this.selectedCities.forEach((city) =>
-        api.getForecast(this.date, city).then((result) =>
+      this.selectedCities.forEach((city) => {
+        this.isLoading = true;
+
+        api.getForecast(this.date, city).then((result) => {
           this.forecast.push({
             cityName: city.name,
             minTemp: result.daily.temperature_2m_min[0],
             maxTemp: result.daily.temperature_2m_max[0],
-          })
-        )
-      );
+          });
+          
+          this.isLoading = false;
+        });
+      });
     },
     addCity(name) {
       const citySelection = this.getAvailableCities.find(
@@ -45,13 +47,13 @@ export const useMainStore = defineStore("MainStore", {
       this.loadForecast();
     },
     setToday() {
-      this.date.start_date = getToday;
-      this.date.end_date = getToday;
+      this.date = getToday;
       this.loadForecast();
     },
-    setTomorrow() {
-      this.date.start_date = tomorrow;
-      this.date.end_date = tomorrow;
+    setNextDay() {
+      console.log(this.date);
+      this.date = getNextDay(this.date);
+      console.log(this.date);
       this.loadForecast();
     },
     sortData(type) {
@@ -73,7 +75,7 @@ export const useMainStore = defineStore("MainStore", {
           return a.cityName.localeCompare(b.cityName) * modifier;
         });
       }
-      
+
       return this.forecast.sort((a, b) => {
         let modifier = 1;
         if (this.sort.order === "desc") modifier = -1;
