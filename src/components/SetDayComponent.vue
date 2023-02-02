@@ -1,13 +1,21 @@
 <template>
-  <div>
-    <v-btn color="secondary" size="large" @click="setToday()">Today</v-btn>
-    <v-btn color="secondary" size="large" @click="setTomorrow()">Tomorrow</v-btn>
-    <p>Forecast for:{{ mainStore.date.start_date }}</p>
-  </div>
+  <v-card prepend-icon="mdi-calendar-today">
+    <template v-slot:title> Forecast for: </template>
+    <v-card-text class="text-center">
+      <strong>{{ formatedDate }}</strong>
+    </v-card-text>
+    <v-card-actions class="d-flex justify-center">
+      <v-btn variant="text" size="large" @click="setToday()"> Today </v-btn>
+      <v-btn variant="text" size="large" @click="setNextDay()"
+        >Next Day</v-btn
+      >
+    </v-card-actions>
+  </v-card>
 </template>
 
 <script>
 import { useMainStore } from "@/stores/MainStore";
+import { formatDate } from "../helper/date";
 
 export default {
   name: "SetDayComponent",
@@ -21,8 +29,13 @@ export default {
     setToday() {
       this.mainStore.setToday();
     },
-    setTomorrow() {
-      this.mainStore.setTomorrow();
+    setNextDay() {
+      this.mainStore.setNextDay();
+    },
+  },
+  computed: {
+    formatedDate() {
+      return formatDate(this.mainStore.date);
     },
   },
 };
