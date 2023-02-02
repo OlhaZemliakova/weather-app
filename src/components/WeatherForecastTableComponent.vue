@@ -1,49 +1,41 @@
 <template>
-  <CitySelection />
-  <v-table>
-    <thead>
-      <tr>
-        <th @click="sortData('cityName')">
-          <p>City</p>
-          <v-icon icon="mdi-menu-swap" />
-        </th>
-        <th @click="sortData('minTemp')">
-          <p>MinTemp</p>
-          <v-icon icon="mdi-menu-swap" />
-        </th>
-        <th @click="sortData('maxTemp')">
-          <p>MaxTemp</p>
-          <v-icon icon="mdi-menu-swap" />
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="data in mainStore.getListData" :key="data.name">
-        <td>{{ data.cityName }}</td>
-        <td>{{ data.minTemp }}</td>
-        <td>{{ data.maxTemp }}</td>
-        <td>
-          <v-btn
-            color="error"
-            rounded="pill"
-            size="x-small"
-            @click="removeCity(data.name)"
-            >Delete</v-btn
-          >
-        </td>
-      </tr>
-    </tbody>
-  </v-table>
+  <v-card variant="outlined" class="ma-5">
+    <v-data-table-server
+    v-model:items-per-page="itemsPerPage"
+    :headers="headers"
+    :items="mainStore.getListData"
+    item-key="cityName"
+    item-value="cityName"
+    @update:sortBy="sortData($event)"
+    :loading="mainStore.isLoading"
+    loading-text="Loading... Please wait"
+    class="elevation-1"
+  >
+    <template v-slot:item.actions="{ item }">
+      <v-icon size="small" @click="removeCity(item.raw.cityName)">
+        mdi-delete
+      </v-icon>
+    </template>
+  </v-data-table-server>
+  </v-card>
 </template>
 
 <script>
 import { useMainStore } from "@/stores/MainStore";
-import CitySelection from "@/components/CitySelection.vue";
 
 export default {
   name: "WeatherForecastTableComponent",
-  components: { CitySelection },
-
+  data() {
+    return {
+      itemsPerPage: 10,
+      headers: [
+        { title: "City", align: "center", key: "cityName" },
+        { title: "MinTemp", align: "center", key: "minTemp" },
+        { title: "MaxTemp", align: "center", key: "maxTemp" },
+        { title: "Actions", align: "center", sortable: false, key: "actions" },
+      ],
+    };
+  },
   setup() {
     const mainStore = useMainStore();
 
@@ -51,17 +43,20 @@ export default {
   },
   methods: {
     removeCity(name) {
+      console.log(name);
       this.mainStore.removeCity(name);
     },
     sortData(type) {
-      this.mainStore.sortData(type);
-    }
+      console.log(type);
+      if (!type.length) {
+        return;
+      }
+      this.mainStore.sortData(type[0].key);
+    },
   },
 };
 </script>
 
 <style scoped>
-th {
-  cursor: pointer;
-}
+
 </style>
