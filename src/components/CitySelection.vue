@@ -1,16 +1,28 @@
 <template>
-  <v-btn dark color="primary" @click="openCitiesList()">City Select</v-btn>
-  <v-list v-if="isOpen == true">
-    <v-list-item v-for="city in mainStore.getAvailableCities" :key="city.name">
-      {{ city.name }}
-      <v-btn dark color="primary" size="small" @click="addCity(city.name)">
-        Add
-      </v-btn>
-    </v-list-item>
-  </v-list>
-  <v-alert v-if="mainStore.getAvailableCities.length === 0" color="info" icon="$error">
-    List is empty
-  </v-alert>
+  <v-menu open-on-hover>
+    <template v-slot:activator="{ props }">
+      <div class="text-center mt-5">
+        <v-btn size="large" variant="text" v-bind="props"
+        ><p class="mr-2">City Select</p>
+        <v-icon icon="mdi-plus-circle"></v-icon
+      ></v-btn>
+      </div>
+    </template>
+    <v-list v-if="mainStore.getAvailableCities.length > 0" theme="dark">
+      <v-list-item
+        v-for="city in mainStore.getAvailableCities"
+        :key="city.name"
+      >
+        <v-list-item-title @click="addCity(city.name)"
+          >{{ city.name }}
+        </v-list-item-title>
+      </v-list-item>
+    </v-list>
+    <v-alert v-else>
+      <p>List is empty...</p>
+      <v-icon icon="mdi-emoticon-sad-outline" />
+    </v-alert>
+  </v-menu>
 </template>
 
 <script>
@@ -18,20 +30,12 @@ import { useMainStore } from "@/stores/MainStore";
 
 export default {
   name: "CitySelection",
-  data() {
-    return {
-      isOpen: false,
-    };
-  },
   setup() {
     const mainStore = useMainStore();
 
     return { mainStore };
   },
   methods: {
-    openCitiesList() {
-      this.isOpen = !this.isOpen;
-    },
     addCity(name) {
       this.mainStore.addCity(name);
     },
@@ -40,4 +44,7 @@ export default {
 </script>
 
 <style scoped>
+.v-list-item-title {
+  cursor: pointer;
+}
 </style>
