@@ -1,13 +1,18 @@
 <template>
   <v-app>
-    <v-app-bar color="grey-lighten-2">
-      <v-icon icon="mdi-home" />
+    <v-app-bar class="bg-indigo-darken-2">
+      <p class="logo ml-5">Weather app</p>
+      <v-icon icon="mdi-weather-partly-lightning"></v-icon>
     </v-app-bar>
     <v-main>
-      <v-container>
-        <SetDayComponent />
+      <v-navigation-drawer
+        image="https://cdn.vuetifyjs.com/images/backgrounds/bg-2.jpg"
+        permanent
+      >
+          <SetDayComponent />
+          <CitySelection />
+      </v-navigation-drawer>
         <WeatherForecastTableComponent />
-      </v-container>
     </v-main>
   </v-app>
 </template>
@@ -16,9 +21,10 @@
 import { useMainStore } from "@/stores/MainStore";
 import WeatherForecastTableComponent from "@/components/WeatherForecastTableComponent.vue";
 import SetDayComponent from "@/components/SetDayComponent.vue";
+import CitySelection from "@/components/CitySelection.vue";
 
 export default {
-  components: { WeatherForecastTableComponent, SetDayComponent },
+  components: { WeatherForecastTableComponent, SetDayComponent, CitySelection },
   name: "app",
 
   setup() {
@@ -33,4 +39,9 @@ export default {
 </script>
 
 <style scoped>
+.logo {
+  font-size: 36px;
+  font-family: "Lato", sans-serif;
+  font-weight: 700;
+}
 </style>
