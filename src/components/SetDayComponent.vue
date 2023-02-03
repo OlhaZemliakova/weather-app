@@ -1,12 +1,12 @@
 <template>
-  <v-card prepend-icon="mdi-calendar-today">
+  <v-card prepend-icon="mdi-calendar-today" class="ma-2">
     <template v-slot:title> Forecast for: </template>
     <v-card-text class="text-center">
       <strong>{{ formatedDate }}</strong>
     </v-card-text>
     <v-card-actions class="d-flex justify-center">
-      <v-btn variant="text" size="large" @click="setToday()"> Today </v-btn>
-      <v-btn variant="text" size="large" @click="setNextDay()"
+      <v-btn @click="setToday()"> Today </v-btn>
+      <v-btn variant="outlined" @click="setNextDay()"
         >Next Day</v-btn
       >
     </v-card-actions>

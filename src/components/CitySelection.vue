@@ -2,13 +2,13 @@
   <v-menu open-on-hover>
     <template v-slot:activator="{ props }">
       <div class="text-center mt-5">
-        <v-btn size="large" variant="text" v-bind="props"
+        <v-btn size="large" variant="tonal" v-bind="props"
         ><p class="mr-2">City Select</p>
         <v-icon icon="mdi-plus-circle"></v-icon
       ></v-btn>
       </div>
     </template>
-    <v-list v-if="mainStore.getAvailableCities.length > 0" theme="dark">
+    <v-list v-if="mainStore.getAvailableCities.length > 0" class="bg-grey-lighten-5">
       <v-list-item
         v-for="city in mainStore.getAvailableCities"
         :key="city.name"

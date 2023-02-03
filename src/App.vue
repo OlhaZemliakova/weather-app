@@ -7,7 +7,6 @@
     <v-main>
       <v-navigation-drawer
         image="https://cdn.vuetifyjs.com/images/backgrounds/bg-2.jpg"
-        permanent
       >
           <SetDayComponent />
           <CitySelection />
